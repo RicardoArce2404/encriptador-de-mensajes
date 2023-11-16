@@ -25,7 +25,10 @@ public class CifLlave extends AlgoritmoCifrado {
       Character letraLlave = llave.charAt(i % llave.length());
       int valorLetraLlave = Character.getNumericValue(letraLlave) - 9;
 
-      int valorLetraCifrada = (valorLetraMensaje + valorLetraLlave) % 27;      
+      int valorLetraCifrada = valorLetraMensaje + valorLetraLlave;
+      if (valorLetraCifrada > 26) {
+        valorLetraCifrada -= 26;
+      }
       mensajeCifrado.append((char) (valorLetraCifrada + 96));
     }
     
@@ -50,7 +53,10 @@ public class CifLlave extends AlgoritmoCifrado {
       Character letraLlave = pLlave.charAt(i % pLlave.length());
       int valorLetraLlave = Character.getNumericValue(letraLlave) - 9;
 
-      int valorLetraCifrada = (valorLetraMensaje + valorLetraLlave) % 27;      
+      int valorLetraCifrada = valorLetraMensaje + valorLetraLlave;
+      if (valorLetraCifrada > 26) {
+        valorLetraCifrada -= 26;
+      }
       mensajeCifrado.append((char) (valorLetraCifrada + 96));
     }
     
@@ -75,9 +81,9 @@ public class CifLlave extends AlgoritmoCifrado {
       Character letraLlave = llave.charAt(i % llave.length());
       int valorLetraLlave = Character.getNumericValue(letraLlave) - 9;
 
-      int valorLetraDescifrada = (valorLetraMensaje - valorLetraLlave) % 27;
-      if (valorLetraDescifrada < 0) {
-        valorLetraDescifrada += 5;
+      int valorLetraDescifrada = valorLetraMensaje - valorLetraLlave;
+      if (valorLetraDescifrada < 1) {
+        valorLetraDescifrada += 26;
       }
       mensajeDescifrado.append((char) (valorLetraDescifrada + 96));
     }
@@ -103,9 +109,9 @@ public class CifLlave extends AlgoritmoCifrado {
       Character letraLlave = pLlave.charAt(i % pLlave.length());
       int valorLetraLlave = Character.getNumericValue(letraLlave) - 9;
 
-      int valorLetraDescifrada = (valorLetraMensaje - valorLetraLlave) % 27;
-      if (valorLetraDescifrada < 0) {
-        valorLetraDescifrada += 5;
+      int valorLetraDescifrada = valorLetraMensaje - valorLetraLlave;
+      if (valorLetraDescifrada < 1) {
+        valorLetraDescifrada += 26;
       }
       mensajeDescifrado.append((char) (valorLetraDescifrada + 96));
     }

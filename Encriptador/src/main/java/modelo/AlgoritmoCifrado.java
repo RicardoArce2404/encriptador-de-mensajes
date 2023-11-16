@@ -6,6 +6,6 @@ package modelo;
  * @author Ricardo.
  */
 public abstract class AlgoritmoCifrado {
-  public abstract String cifrarMensaje(String pTexto);
-  public abstract String descifrarMensaje(String pCodigo);
+  public abstract String cifrarMensaje(String pMensaje);
+  public abstract String descifrarMensaje(String pMensaje);
 }

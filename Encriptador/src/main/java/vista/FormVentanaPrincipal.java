@@ -69,15 +69,19 @@ public class FormVentanaPrincipal extends javax.swing.JFrame {
 
     txtSalida.setBackground(new java.awt.Color(40, 43, 48));
     txtSalida.setColumns(20);
+    txtSalida.setForeground(new java.awt.Color(255, 255, 255));
     txtSalida.setRows(5);
     txtSalida.setBorder(null);
-    txtSalida.setFocusable(false);
+    txtSalida.setCaretColor(new java.awt.Color(255, 255, 255));
     jScrollPane1.setViewportView(txtSalida);
 
     txtEntrada.setBackground(new java.awt.Color(40, 43, 48));
     txtEntrada.setColumns(20);
+    txtEntrada.setForeground(new java.awt.Color(255, 255, 255));
     txtEntrada.setRows(5);
     txtEntrada.setBorder(null);
+    txtEntrada.setCaretColor(new java.awt.Color(255, 255, 255));
+    txtEntrada.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
     jScrollPane2.setViewportView(txtEntrada);
 
     btEnviarCorreo.setBackground(new java.awt.Color(54, 57, 62));
@@ -135,13 +139,6 @@ public class FormVentanaPrincipal extends javax.swing.JFrame {
       .addGroup(jPanel1Layout.createSequentialGroup()
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
           .addGroup(jPanel1Layout.createSequentialGroup()
-            .addGap(32, 32, 32)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-              .addComponent(jLabel4)
-              .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 844, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jLabel3)
-              .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 844, javax.swing.GroupLayout.PREFERRED_SIZE)))
-          .addGroup(jPanel1Layout.createSequentialGroup()
             .addGap(53, 53, 53)
             .addComponent(jLabel1)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -149,20 +146,23 @@ public class FormVentanaPrincipal extends javax.swing.JFrame {
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btCargarArchivo)
             .addGap(20, 20, 20))
-          .addGroup(javax.swing.GroupLayout.Alignment.CENTER, jPanel1Layout.createSequentialGroup()
-            .addGap(288, 288, 288)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-              .addGroup(javax.swing.GroupLayout.Alignment.CENTER, jPanel1Layout.createSequentialGroup()
+          .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGap(32, 32, 32)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+              .addComponent(jLabel4)
+              .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 844, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addComponent(jLabel3)
+              .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 844, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbAlgoritmo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-              .addGroup(javax.swing.GroupLayout.Alignment.CENTER, jPanel1Layout.createSequentialGroup()
+              .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(btCifrar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btEnviarCorreo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGap(256, 256, 256)))
+                .addComponent(btSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         .addContainerGap(33, Short.MAX_VALUE))
     );
 
@@ -178,20 +178,20 @@ public class FormVentanaPrincipal extends javax.swing.JFrame {
           .addComponent(jLabel2)
           .addComponent(cbOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(jLabel1))
-        .addGap(25, 25, 25)
+        .addGap(37, 37, 37)
         .addComponent(jLabel4)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(18, 18, 18)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jLabel3)
-        .addGap(18, 18, 18)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(btEnviarCorreo)
           .addComponent(btSalir)
           .addComponent(btCifrar))
-        .addGap(27, 27, 27))
+        .addGap(25, 25, 25))
     );
 
     jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cbOperacion, jLabel1});
@@ -272,12 +272,12 @@ public class FormVentanaPrincipal extends javax.swing.JFrame {
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton btCargarArchivo;
-  private javax.swing.JButton btCifrar;
-  private javax.swing.JButton btEnviarCorreo;
-  private javax.swing.JButton btSalir;
-  private javax.swing.JComboBox<String> cbAlgoritmo;
-  private javax.swing.JComboBox<String> cbOperacion;
+  public javax.swing.JButton btCargarArchivo;
+  public javax.swing.JButton btCifrar;
+  public javax.swing.JButton btEnviarCorreo;
+  public javax.swing.JButton btSalir;
+  public javax.swing.JComboBox<String> cbAlgoritmo;
+  public javax.swing.JComboBox<String> cbOperacion;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel2;
   private javax.swing.JLabel jLabel3;
@@ -285,7 +285,7 @@ public class FormVentanaPrincipal extends javax.swing.JFrame {
   private javax.swing.JPanel jPanel1;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2;
-  private javax.swing.JTextArea txtEntrada;
-  private javax.swing.JTextArea txtSalida;
+  public javax.swing.JTextArea txtEntrada;
+  public javax.swing.JTextArea txtSalida;
   // End of variables declaration//GEN-END:variables
 }

@@ -16,6 +16,7 @@ public class CifRsa extends AlgoritmoCifrado {
    */
   public String cifrarMensaje(String pMensaje) {
     // por hacer
+    return "";
   }
   
   /**
@@ -26,6 +27,7 @@ public class CifRsa extends AlgoritmoCifrado {
    */
   public String descifrarMensaje(String pMensaje) {
     // por hacer
+    return "";
   }
 
 }
