@@ -3,11 +3,15 @@ package controlador;
 import vista.FormVentanaPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import javax.swing.JOptionPane;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.*;
 
 /**
@@ -49,6 +53,9 @@ public class ControladorEncriptador implements ActionListener {
     }
   }
   
+  /**
+   * Cambia el texto del botón de cifrado/descifrado a la operación seleccionada actualmente.
+   */
   public void cambiarOperacion() {
     String operacionActual = (String) vista.cbOperacion.getSelectedItem();
     vista.btCifrar.setText(operacionActual + " texto");
@@ -63,16 +70,36 @@ public class ControladorEncriptador implements ActionListener {
     electorArchivo.setFileFilter(filtro);
     int opcionElegida = electorArchivo.showOpenDialog(vista);
 
-    if(opcionElegida == JFileChooser.APPROVE_OPTION) {
-      FileReader lectorArchivo;
-      try {
-        lectorArchivo = new FileReader(electorArchivo.getSelectedFile());
-      } catch (FileNotFoundException e) {
-        JOptionPane.showMessageDialog(vista, "No se encontró el archivo seleccionado",
-                                      "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
-      }
-      // Lógica de lectura de archivo aquí.
+    if (opcionElegida != JFileChooser.APPROVE_OPTION) {
+      return;
     }
+
+    BufferedReader lectorArchivo;
+    try {
+      lectorArchivo = new BufferedReader(new FileReader(electorArchivo.getSelectedFile()));
+      
+      StringBuilder textoArchivo = new StringBuilder();
+      String lineaArchivo;
+      lineaArchivo = lectorArchivo.readLine();
+
+      while (lineaArchivo != null) {
+        textoArchivo.append(lineaArchivo);
+        textoArchivo.append(System.lineSeparator());
+        lineaArchivo = lectorArchivo.readLine();
+      }
+
+      vista.txtEntrada.setText(textoArchivo.toString());
+      lectorArchivo.close();
+
+    } catch (FileNotFoundException e) {
+      JOptionPane.showMessageDialog(vista, "No se encontró el archivo seleccionado.",
+                                    "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
+    } catch (IOException e) {
+      JOptionPane.showMessageDialog(vista, "Ocurrió un problema con la lectura del archivo.",
+                                    "Error de lectura", JOptionPane.ERROR_MESSAGE);
+    }
+
+
   }
   
   /**
