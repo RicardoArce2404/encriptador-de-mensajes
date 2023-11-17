@@ -10,18 +10,30 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.*;
 
 /**
- * Módulo de comunicación entre el modelo y la interfaz.
+ * Módulo de comunicación entre el modelo y la interfaz del encriptador.
+ * Aquí se inicia la ejecución de la aplicación.
  *
  * @author Ricardo.
  */
 public class ControladorEncriptador implements ActionListener {
   
   public FormVentanaPrincipal vista;
+  
+  // Parámetros a usar para el cifrado RSA.
+  public int modulo = 0;
+  public int exponentePublico = 0;
+  public int exponentePrivado = 0;
+  
+  public static void main(String[] args) {
+    FormVentanaPrincipal vista = new FormVentanaPrincipal();
+    ControladorEncriptador controlador = new ControladorEncriptador(vista);
+    controlador.vista.setVisible(true);
+  }
   
   public ControladorEncriptador(FormVentanaPrincipal pVista) {
     vista = pVista;
@@ -31,6 +43,109 @@ public class ControladorEncriptador implements ActionListener {
     vista.btCifrar.addActionListener((ActionListener) this);
     vista.btEnviarCorreo.addActionListener((ActionListener) this);
     vista.btSalir.addActionListener((ActionListener) this);
+  }
+  
+  /**
+   * Verifica si el mensaje especificado contiene algún caracter inválido para el
+   * algoritmo de cifrado especificado, exceptuando al carácter \n y al espacio.
+   *
+   * @param pMensaje Mensaje a validar.
+   * @param pCifrado Algoritmo de cifrado a usar para la validación.
+   * @param pOperacion Operación a realizar sobre el mensaje.
+   * @return true si el mensaje es válido para el cifrado especificado, sino false.
+   */
+  public boolean mensajeValido(String pMensaje, String pCifrado, String pOperacion) {
+    pMensaje = pMensaje.toLowerCase();
+
+    switch (pCifrado) {
+
+      // El alfabeto válido del cifrado César, llave y Vigenére son iguales.
+      case "César":  // Pasa al siguiente case.
+      case "Llave":  // Pasa al siguiente case.
+      case "Vigenére":
+        for (Character letra : pMensaje.toCharArray()) {
+          int valorLetra = Character.getNumericValue(letra);
+          if ((valorLetra < 10 || valorLetra > 35) && !letra.equals('\n') && !letra.equals(' ')) {
+            return false;
+          }
+        }
+        return true;
+        
+      case "Palabra inversa":  // Pasa al siguiente case.
+      case "Mensaje inverso":
+        // El alfabeto válido para este cifrado es cualquier carácter.
+        return true;
+
+      case "Código telefónico":  // Aquí hay que hacer validaciones diferentes dependiendo de la operación.
+        if (pOperacion.equals("Cifrar")) {
+          for (Character letra : pMensaje.toCharArray()) {
+            int valorLetra = Character.getNumericValue(letra);
+            if (!(valorLetra >= 10 && valorLetra <= 35) && !letra.equals('\n') && !letra.equals(' ')) {
+              return false;
+            }
+          }
+          return true;
+        }
+        if (pOperacion.equals("Descifrar")) {
+          for (Character letra : pMensaje.toCharArray()) {
+            int valorLetra = Character.getNumericValue(letra);
+            if (!(valorLetra >= 0 && valorLetra <= 9) && !letra.equals('\n')
+                && !letra.equals(' ') && !letra.equals('*')) {
+              return false;
+            }
+          }
+          return true;
+        }
+        return false;
+
+      case "Codificación binaria":  // Aquí hay que hacer validaciones diferentes dependiendo de la operación.
+        if (pOperacion.equals("Cifrar")) {
+          for (Character letra : pMensaje.toCharArray()) {
+            int valorLetra = Character.getNumericValue(letra);
+            if (!(valorLetra >= 10 && valorLetra <= 35) && !letra.equals('\n') && !letra.equals(' ')) {
+              return false;
+            }
+          }
+          return true;
+        }
+        if (pOperacion.equals("Descifrar")) {
+          for (Character letra : pMensaje.toCharArray()) {
+            int valorLetra = Character.getNumericValue(letra);
+            if (valorLetra != 0 && valorLetra != 1 && !letra.equals('\n')
+                && !letra.equals(' ') && !letra.equals('*')) {
+              return false;
+            }
+          }
+          return true;
+        }
+        return false;
+
+      case "RSA":
+        if (pOperacion.equals("Cifrar")) {
+          for (char letra : pMensaje.toCharArray()) {
+            int valorLetra = (int) letra;
+            if (!(valorLetra >= 32 && valorLetra <= 126) && letra != '\n') {
+              return false;
+            }
+          }
+          return false;
+        }
+        if (pOperacion.equals("Descifrar")) {
+          for (char letra : pMensaje.toCharArray()) {
+            int valorLetra = (int) letra;
+            if (!(valorLetra >= 48 && valorLetra <= 57) && letra != '\n') {
+              return false;
+            }
+          }
+          return false;
+        }
+        return false;
+        
+      case "DES":  // Por implementar.
+      case "AES":  // Por implementar.
+      default:
+        return false;
+    }
   }
   
   /**
@@ -109,6 +224,11 @@ public class ControladorEncriptador implements ActionListener {
   public void cifrar() {
     String algoritmoElegido = (String) vista.cbAlgoritmo.getSelectedItem();
     String mensaje = vista.txtEntrada.getText();
+    String msgError = "Se encontraron 1 o más caracteres no soportados por el algoritmo de cifrado elegido.";
+    if (!mensajeValido(mensaje, algoritmoElegido, "Cifrar")) {
+      JOptionPane.showMessageDialog(vista, msgError, "Entrada inválida", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     String mensajeCifrado;
 
 
@@ -117,6 +237,7 @@ public class ControladorEncriptador implements ActionListener {
 //      case "César":
 
       case "Llave":
+        
         CifLlave cifLlave = new CifLlave();
         String llave = JOptionPane.showInputDialog(vista,
                                                    "Ingrese la llave a usar para cifrar el mensaje.");
@@ -136,7 +257,17 @@ public class ControladorEncriptador implements ActionListener {
 
       case "RSA":
         CifRsa cifRsa = new CifRsa();
-        mensajeCifrado = cifRsa.cifrarMensaje(mensaje);
+        
+        // En caso de que no se hayan generado los parámetros
+        // necesarios para el cifrado RSA, se generan aquí.
+        if (modulo == 0) {
+          List<Integer> parametros = cifRsa.generarParametros();
+          modulo = parametros.get(0);
+          exponentePublico = parametros.get(1);
+          exponentePrivado = parametros.get(2);
+        }
+        
+        mensajeCifrado = cifRsa.cifrarMensaje(mensaje, modulo, exponentePublico);
         break;
 
 //      case "DES":
@@ -157,6 +288,11 @@ public class ControladorEncriptador implements ActionListener {
   public void descifrar() {
     String algoritmoElegido = (String) vista.cbAlgoritmo.getSelectedItem();
     String mensaje = vista.txtEntrada.getText();
+    String msgError = "El mensaje especificado no es descifrable con el algoritmo elegido.";
+    if (!mensajeValido(mensaje, algoritmoElegido, "Descifrar")) {
+      JOptionPane.showMessageDialog(vista, msgError, "Entrada inválida", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     String mensajeDescifrado;
 
     switch (algoritmoElegido) {
@@ -183,7 +319,16 @@ public class ControladorEncriptador implements ActionListener {
 
       case "RSA":
         CifRsa cifRsa = new CifRsa();
-        mensajeDescifrado = cifRsa.descifrarMensaje(mensaje);
+        
+        if (modulo == 0) {
+          String msg = """
+                       Aún no se han generado los parámetros necesarios para el decifrado con RSA.
+                       Porfavor cifre algún mensaje con RSA antes de continuar.""";
+          JOptionPane.showMessageDialog(vista, msg, "Faltan parámetros", JOptionPane.ERROR_MESSAGE);
+          return;
+        }
+        
+        mensajeDescifrado = cifRsa.descifrarMensaje(mensaje, modulo, exponentePrivado);
         break;
 
 //      case "DES":
