@@ -1,5 +1,6 @@
 package modelo;
 
+import java.math.BigInteger;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Collections;
 public class CifRsa extends AlgoritmoCifrado {
   
   // Valor a usar como límite superior para el generador de número aleatorios.
-  private final int limiteGenerador = (int) Math.pow(2, 15);
+  private final int limiteGenerador = (int) Math.pow(2, 8);
 
   /**
    * Valida si el número especificado es un número primo.
@@ -152,8 +153,9 @@ public class CifRsa extends AlgoritmoCifrado {
     StringBuilder mensajeCifrado = new StringBuilder();
     
     for (char letra : pMensaje.toCharArray()) {
-      int valorLetra = (int) letra;
-      int valorCifrado = (int) Math.pow(valorLetra, pExponentePublico) % pModulo;
+      BigInteger valorLetra = BigInteger.valueOf((int) letra);
+      BigInteger valorCifrado = valorLetra.pow(pExponentePublico);
+      valorCifrado = valorCifrado.mod(BigInteger.valueOf(pModulo));
       mensajeCifrado.append(valorCifrado);
       mensajeCifrado.append('*');
     }
@@ -181,8 +183,22 @@ public class CifRsa extends AlgoritmoCifrado {
    * @return Mensaje descifrado.
    */
   public String descifrarMensaje(String pMensaje, int pModulo, int pExponentePrivado) {
-    // por hacer
-    return "";
+    
+    List<BigInteger> valoresCaracteresCifrados = new ArrayList();
+    for (String valorCaracterCifrado : pMensaje.split("\\*")) {
+      // Se pasa el valor de String a int y luego de int a BigInteger.
+      valoresCaracteresCifrados.add(BigInteger.valueOf(Integer.parseInt(valorCaracterCifrado)));
+    }
+    
+    StringBuilder mensajeDescifrado = new StringBuilder();
+    
+    for (BigInteger valorCaracterCifrado : valoresCaracteresCifrados) {
+      BigInteger valorCaracterDescifrado = valorCaracterCifrado.pow(pExponentePrivado);
+      valorCaracterDescifrado = valorCaracterDescifrado.mod(BigInteger.valueOf(pModulo));
+      mensajeDescifrado.append((char) valorCaracterDescifrado.intValue());
+    }
+
+    return mensajeDescifrado.toString();
   }
 
 }

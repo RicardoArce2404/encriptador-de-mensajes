@@ -128,16 +128,16 @@ public class ControladorEncriptador implements ActionListener {
               return false;
             }
           }
-          return false;
+          return true;
         }
         if (pOperacion.equals("Descifrar")) {
           for (char letra : pMensaje.toCharArray()) {
             int valorLetra = (int) letra;
-            if (!(valorLetra >= 48 && valorLetra <= 57) && letra != '\n') {
+            if (!(valorLetra >= 48 && valorLetra <= 57) && letra != '\n' && letra != '*') {
               return false;
             }
           }
-          return false;
+          return true;
         }
         return false;
         
