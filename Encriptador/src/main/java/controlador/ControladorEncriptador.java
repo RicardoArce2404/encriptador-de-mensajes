@@ -29,12 +29,22 @@ public class ControladorEncriptador implements ActionListener {
   public int exponentePublico = 0;
   public int exponentePrivado = 0;
   
+  /**
+   * Punto de inicio de la aplicación.
+   *
+   * @param args Argumentos de la línea de comandos.
+   */
   public static void main(String[] args) {
     FormVentanaPrincipal vista = new FormVentanaPrincipal();
     ControladorEncriptador controlador = new ControladorEncriptador(vista);
     controlador.vista.setVisible(true);
   }
   
+  /**
+   * Constructor de la clase ControladorEncriptador.
+   *
+   * @param pVista Interfaz gráfica a usar por el controlador.
+   */
   public ControladorEncriptador(FormVentanaPrincipal pVista) {
     vista = pVista;
     vista.cbAlgoritmo.addActionListener((ActionListener) this);
@@ -45,6 +55,39 @@ public class ControladorEncriptador implements ActionListener {
     vista.btSalir.addActionListener((ActionListener) this);
   }
   
+  /**
+   * Verifica si el carácter ASCII especificado es una letra minúscula.
+   *
+   * @param pCaracter Carácter ASCII a validar.
+   * @return true si se cumple la condición, sino false.
+   */
+  public boolean esLetraMinuscula(char pCaracter) {
+    int valorLetra = (int) pCaracter;
+    return valorLetra >= 97 && valorLetra <= 122;
+  }
+  
+  /**
+   * Verifica si el carácter ASCII especificado es un espacio en blanco,
+   * un salto de línea o un retorno de carro (código ASCII 13).
+   *
+   * @param pCaracter Carácter ASCII a validar.
+   * @return true si se cumple la condición, sino false.
+   */
+  public boolean esSeparadorPalabra(char pCaracter) {
+    return pCaracter == ' ' || pCaracter == '\n' || pCaracter == (char) 13;
+  }
+  
+  /**
+   * Verifica si el carácter ASCII especificado es un dígito.
+   *
+   * @param pCaracter Carácter ASCII a validar.
+   * @return true si se cumple la condición, sino false.
+   */
+  public boolean esDigito(char pCaracter) {
+    int valorLetra = (int) pCaracter;
+    return valorLetra >= 48 && valorLetra <= 57;
+  }
+
   /**
    * Verifica si el mensaje especificado contiene algún caracter inválido para el
    * algoritmo de cifrado especificado, exceptuando al carácter \n y al espacio.
@@ -63,9 +106,9 @@ public class ControladorEncriptador implements ActionListener {
       case "César":  // Pasa al siguiente case.
       case "Llave":  // Pasa al siguiente case.
       case "Vigenére":
-        for (Character letra : pMensaje.toCharArray()) {
-          int valorLetra = Character.getNumericValue(letra);
-          if ((valorLetra < 10 || valorLetra > 35) && !letra.equals('\n') && !letra.equals(' ')) {
+        for (char letra : pMensaje.toCharArray()) {
+          int valorLetra = (int) letra;
+          if (!esLetraMinuscula(letra) && !esSeparadorPalabra(letra)) {
             return false;
           }
         }
@@ -78,19 +121,16 @@ public class ControladorEncriptador implements ActionListener {
 
       case "Código telefónico":  // Aquí hay que hacer validaciones diferentes dependiendo de la operación.
         if (pOperacion.equals("Cifrar")) {
-          for (Character letra : pMensaje.toCharArray()) {
-            int valorLetra = Character.getNumericValue(letra);
-            if (!(valorLetra >= 10 && valorLetra <= 35) && !letra.equals('\n') && !letra.equals(' ')) {
+          for (char letra : pMensaje.toCharArray()) {
+            if (!esLetraMinuscula(letra) && !esSeparadorPalabra(letra)) {
               return false;
             }
           }
           return true;
         }
         if (pOperacion.equals("Descifrar")) {
-          for (Character letra : pMensaje.toCharArray()) {
-            int valorLetra = Character.getNumericValue(letra);
-            if (!(valorLetra >= 0 && valorLetra <= 9) && !letra.equals('\n')
-                && !letra.equals(' ') && !letra.equals('*')) {
+          for (char letra : pMensaje.toCharArray()) {
+            if (!esDigito(letra) && !esSeparadorPalabra(letra) && letra != '*') {
               return false;
             }
           }
@@ -100,19 +140,16 @@ public class ControladorEncriptador implements ActionListener {
 
       case "Codificación binaria":  // Aquí hay que hacer validaciones diferentes dependiendo de la operación.
         if (pOperacion.equals("Cifrar")) {
-          for (Character letra : pMensaje.toCharArray()) {
-            int valorLetra = Character.getNumericValue(letra);
-            if (!(valorLetra >= 10 && valorLetra <= 35) && !letra.equals('\n') && !letra.equals(' ')) {
+          for (char letra : pMensaje.toCharArray()) {
+            if (!esLetraMinuscula(letra) && !esSeparadorPalabra(letra)) {
               return false;
             }
           }
           return true;
         }
         if (pOperacion.equals("Descifrar")) {
-          for (Character letra : pMensaje.toCharArray()) {
-            int valorLetra = Character.getNumericValue(letra);
-            if (valorLetra != 0 && valorLetra != 1 && !letra.equals('\n')
-                && !letra.equals(' ') && !letra.equals('*')) {
+          for (char letra : pMensaje.toCharArray()) {
+            if (letra != '0' && letra != '1' && letra != '*' && !esSeparadorPalabra(letra)) {
               return false;
             }
           }
@@ -124,7 +161,8 @@ public class ControladorEncriptador implements ActionListener {
         if (pOperacion.equals("Cifrar")) {
           for (char letra : pMensaje.toCharArray()) {
             int valorLetra = (int) letra;
-            if (!(valorLetra >= 32 && valorLetra <= 126) && letra != '\n') {
+            if (!(valorLetra >= 32 && valorLetra <= 126) && !esSeparadorPalabra(letra)) {
+              System.out.println((int) letra);
               return false;
             }
           }
@@ -132,8 +170,8 @@ public class ControladorEncriptador implements ActionListener {
         }
         if (pOperacion.equals("Descifrar")) {
           for (char letra : pMensaje.toCharArray()) {
-            int valorLetra = (int) letra;
-            if (!(valorLetra >= 48 && valorLetra <= 57) && letra != '\n' && letra != '*') {
+            if (!esDigito(letra) && !esSeparadorPalabra(letra) && letra != '*') {
+              System.out.println((int) letra);
               return false;
             }
           }
@@ -224,8 +262,13 @@ public class ControladorEncriptador implements ActionListener {
   public void cifrar() {
     String algoritmoElegido = (String) vista.cbAlgoritmo.getSelectedItem();
     String mensaje = vista.txtEntrada.getText();
-    String msgError = "Se encontraron 1 o más caracteres no soportados por el algoritmo de cifrado elegido.";
+    if (mensaje.isEmpty()) {
+      String msgError = "Porfavor introduzca primero el mensaje a cifrar.";
+      JOptionPane.showMessageDialog(vista, msgError, "Entrada vacía", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     if (!mensajeValido(mensaje, algoritmoElegido, "Cifrar")) {
+      String msgError = "Se encontraron 1 o más caracteres no soportados por el algoritmo de cifrado elegido.";
       JOptionPane.showMessageDialog(vista, msgError, "Entrada inválida", JOptionPane.ERROR_MESSAGE);
       return;
     }
@@ -288,8 +331,13 @@ public class ControladorEncriptador implements ActionListener {
   public void descifrar() {
     String algoritmoElegido = (String) vista.cbAlgoritmo.getSelectedItem();
     String mensaje = vista.txtEntrada.getText();
-    String msgError = "El mensaje especificado no es descifrable con el algoritmo elegido.";
+    if (mensaje.isEmpty()) {
+      String msgError = "Porfavor introduzca primero el mensaje a cifrar.";
+      JOptionPane.showMessageDialog(vista, msgError, "Entrada vacía", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     if (!mensajeValido(mensaje, algoritmoElegido, "Descifrar")) {
+      String msgError = "El mensaje especificado no es descifrable con el algoritmo elegido.";
       JOptionPane.showMessageDialog(vista, msgError, "Entrada inválida", JOptionPane.ERROR_MESSAGE);
       return;
     }
