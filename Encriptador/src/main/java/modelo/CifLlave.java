@@ -36,7 +36,7 @@ public class CifLlave extends AlgoritmoCifrado {
         mensajeCifrado.append(letraMensaje);
         continue;
       }
-      
+
       Character letraLlave = pLlave.charAt(i % pLlave.length());
       int valorLetraLlave = Character.getNumericValue(letraLlave) - 9;
 
@@ -46,7 +46,7 @@ public class CifLlave extends AlgoritmoCifrado {
       }
       mensajeCifrado.append((char) (valorLetraCifrada + 96));
     }
-    
+
     return mensajeCifrado.toString();
   }
 
@@ -55,7 +55,7 @@ public class CifLlave extends AlgoritmoCifrado {
    *
    * @param pMensaje Mensaje a descifrar.
    * @return Mensaje descifrado.
-   */  
+   */
   public String descifrarMensaje(String pMensaje) {
     return descifrarMensaje(pMensaje, "llave predeterminada");
   }
@@ -66,7 +66,7 @@ public class CifLlave extends AlgoritmoCifrado {
    * @param pMensaje Mensaje a descifrar.
    * @param pLlave Llave a usar para descifrar el mensaje.
    * @return Mensaje descifrado.
-   */  
+   */
   public String descifrarMensaje(String pMensaje, String pLlave) {
     String mensaje = pMensaje.toLowerCase();
     StringBuilder mensajeDescifrado = new StringBuilder();
@@ -74,7 +74,7 @@ public class CifLlave extends AlgoritmoCifrado {
     for (int i = 0; i < mensaje.length(); i++) {
       Character letraMensaje = pMensaje.charAt(i);
       int valorLetraMensaje = Character.getNumericValue(letraMensaje) - 9;
-      
+
       if (valorLetraMensaje < 1 || valorLetraMensaje > 26) {
         mensajeDescifrado.append(letraMensaje);
         continue;
@@ -89,7 +89,7 @@ public class CifLlave extends AlgoritmoCifrado {
       }
       mensajeDescifrado.append((char) (valorLetraDescifrada + 96));
     }
-    
+
     return mensajeDescifrado.toString();
   }
 

@@ -16,7 +16,7 @@ public class CifMensajeInverso extends AlgoritmoCifrado {
   public String cifrarMensaje(String pMensaje) {
     return new StringBuilder(pMensaje).reverse().toString();
   }
-  
+
   /**
    * Descifra un mensaje.
    *

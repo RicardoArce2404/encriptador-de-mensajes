@@ -10,25 +10,26 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.*;
 
 /**
- * Módulo de comunicación entre el modelo y la interfaz del encriptador.
- * Aquí se inicia la ejecución de la aplicación.
+ * Módulo de comunicación entre el modelo y la interfaz del encriptador. Aquí se
+ * inicia la ejecución de la aplicación.
  *
  * @author Ricardo.
  */
 public class ControladorEncriptador implements ActionListener {
-  
+
   public FormVentanaPrincipal vista;
-  
+
   // Parámetros a usar para el cifrado RSA.
   public int modulo = 0;
   public int exponentePublico = 0;
   public int exponentePrivado = 0;
-  
+
   /**
    * Punto de inicio de la aplicación.
    *
@@ -39,7 +40,7 @@ public class ControladorEncriptador implements ActionListener {
     ControladorEncriptador controlador = new ControladorEncriptador(vista);
     controlador.vista.setVisible(true);
   }
-  
+
   /**
    * Constructor de la clase ControladorEncriptador.
    *
@@ -54,7 +55,7 @@ public class ControladorEncriptador implements ActionListener {
     vista.btEnviarCorreo.addActionListener((ActionListener) this);
     vista.btSalir.addActionListener((ActionListener) this);
   }
-  
+
   /**
    * Verifica si el carácter ASCII especificado es una letra minúscula.
    *
@@ -65,10 +66,10 @@ public class ControladorEncriptador implements ActionListener {
     int valorLetra = (int) pCaracter;
     return valorLetra >= 97 && valorLetra <= 122;
   }
-  
+
   /**
-   * Verifica si el carácter ASCII especificado es un espacio en blanco,
-   * un salto de línea o un retorno de carro (código ASCII 13).
+   * Verifica si el carácter ASCII especificado es un espacio en blanco, un
+   * salto de línea o un retorno de carro (código ASCII 13).
    *
    * @param pCaracter Carácter ASCII a validar.
    * @return true si se cumple la condición, sino false.
@@ -76,7 +77,7 @@ public class ControladorEncriptador implements ActionListener {
   public boolean esSeparadorPalabra(char pCaracter) {
     return pCaracter == ' ' || pCaracter == '\n' || pCaracter == (char) 13;
   }
-  
+
   /**
    * Verifica si el carácter ASCII especificado es un dígito.
    *
@@ -88,14 +89,25 @@ public class ControladorEncriptador implements ActionListener {
     return valorLetra >= 48 && valorLetra <= 57;
   }
 
+  public boolean esTextoAscii(String pTexto) {
+    for (char caracter : pTexto.toCharArray()) {
+      if (!StandardCharsets.US_ASCII.newEncoder().canEncode(caracter)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
   /**
-   * Verifica si el mensaje especificado contiene algún caracter inválido para el
-   * algoritmo de cifrado especificado, exceptuando al carácter \n y al espacio.
+   * Verifica si el mensaje especificado contiene algún caracter inválido para
+   * el algoritmo de cifrado especificado, exceptuando al carácter \n y al
+   * espacio.
    *
    * @param pMensaje Mensaje a validar.
    * @param pCifrado Algoritmo de cifrado a usar para la validación.
    * @param pOperacion Operación a realizar sobre el mensaje.
-   * @return true si el mensaje es válido para el cifrado especificado, sino false.
+   * @return true si el mensaje es válido para el cifrado especificado, sino
+   * false.
    */
   public boolean mensajeValido(String pMensaje, String pCifrado, String pOperacion) {
     pMensaje = pMensaje.toLowerCase();
@@ -113,7 +125,7 @@ public class ControladorEncriptador implements ActionListener {
           }
         }
         return true;
-        
+
       case "Palabra inversa":  // Pasa al siguiente case.
       case "Mensaje inverso":
         // El alfabeto válido para este cifrado es cualquier carácter.
@@ -178,44 +190,54 @@ public class ControladorEncriptador implements ActionListener {
           return true;
         }
         return false;
-        
-      case "DES":  // Por implementar.
-      case "AES":  // Por implementar.
+
+      case "DES":  // Pasa al siguiente case.
+      case "AES":
+        return esTextoAscii(pMensaje);
+
       default:
         return false;
     }
   }
-  
+
   /**
    * Maneja los eventos generados en la interfaz gráfica.
    *
    * @param pEvento Evento a ser manejado.
    */
   public void actionPerformed(ActionEvent pEvento) {
-    switch(pEvento.getActionCommand()) {
-      case "comboBoxChanged" -> cambiarOperacion();
-      case "Cargar archivo de texto" -> cargarArchivoTexto();
-      case "Cifrar texto" -> cifrar();
-      case "Descifrar texto" -> descifrar();
-      case "Enviar por correo" -> enviarCorreo();
-      case "Salir" -> salir();
+    switch (pEvento.getActionCommand()) {
+      case "comboBoxChanged" ->
+        cambiarOperacion();
+      case "Cargar archivo de texto" ->
+        cargarArchivoTexto();
+      case "Cifrar texto" ->
+        cifrar();
+      case "Descifrar texto" ->
+        descifrar();
+      case "Enviar por correo" ->
+        enviarCorreo();
+      case "Salir" ->
+        salir();
       default -> {
         System.out.println(pEvento.getActionCommand());
         return;
       }
     }
   }
-  
+
   /**
-   * Cambia el texto del botón de cifrado/descifrado a la operación seleccionada actualmente.
+   * Cambia el texto del botón de cifrado/descifrado a la operación seleccionada
+   * actualmente.
    */
   public void cambiarOperacion() {
     String operacionActual = (String) vista.cbOperacion.getSelectedItem();
     vista.btCifrar.setText(operacionActual + " texto");
   }
-  
+
   /**
-   * Carga un archivo de texto e introduce su contenido en el cuadro de entrada de la interfaz.
+   * Carga un archivo de texto e introduce su contenido en el cuadro de entrada
+   * de la interfaz.
    */
   public void cargarArchivoTexto() {
     JFileChooser electorArchivo = new JFileChooser();
@@ -230,7 +252,7 @@ public class ControladorEncriptador implements ActionListener {
     BufferedReader lectorArchivo;
     try {
       lectorArchivo = new BufferedReader(new FileReader(electorArchivo.getSelectedFile()));
-      
+
       StringBuilder textoArchivo = new StringBuilder();
       String lineaArchivo;
       lineaArchivo = lectorArchivo.readLine();
@@ -246,18 +268,17 @@ public class ControladorEncriptador implements ActionListener {
 
     } catch (FileNotFoundException e) {
       JOptionPane.showMessageDialog(vista, "No se encontró el archivo seleccionado.",
-                                    "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
+              "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
     } catch (IOException e) {
       JOptionPane.showMessageDialog(vista, "Ocurrió un problema con la lectura del archivo.",
-                                    "Error de lectura", JOptionPane.ERROR_MESSAGE);
+              "Error de lectura", JOptionPane.ERROR_MESSAGE);
     }
 
-
   }
-  
+
   /**
-   * Verifica cuál es el algoritmo de cifrado elegido y en base a eso cifra
-   * el mensaje introducido por el usuario y lo muestra en la interfaz.
+   * Verifica cuál es el algoritmo de cifrado elegido y en base a eso cifra el
+   * mensaje introducido por el usuario y lo muestra en la interfaz.
    */
   public void cifrar() {
     String algoritmoElegido = (String) vista.cbAlgoritmo.getSelectedItem();
@@ -273,34 +294,52 @@ public class ControladorEncriptador implements ActionListener {
       return;
     }
     String mensajeCifrado;
-
+    String llave;
 
     switch (algoritmoElegido) {
 
-//      case "César":
-
-      case "Llave":
-        
-        CifLlave cifLlave = new CifLlave();
-        String llave = JOptionPane.showInputDialog(vista,
-                                                   "Ingrese la llave a usar para cifrar el mensaje.");
-        mensajeCifrado = cifLlave.cifrarMensaje(mensaje, llave);
+      case "César":
+        CifCesar cifCesar = new CifCesar();
+        mensajeCifrado = cifCesar.cifrarMensaje(mensaje);
         break;
 
-//      case "Vigenére":
-//      case "Palabra inversa":
+      case "Llave":
+        CifLlave cifLlave = new CifLlave();
+        llave = JOptionPane.showInputDialog(vista, "Ingrese la llave a usar para cifrar el mensaje.");
+        if (llave.isEmpty()) {  // Si no se especifica una llave, se usa la predeterminada.
+          mensajeCifrado = cifLlave.cifrarMensaje(mensaje);
+        } else {
+          mensajeCifrado = cifLlave.cifrarMensaje(mensaje, llave);
+        }
+        break;
+
+      case "Vigenére":
+        CifVigenere cifVigenere = new CifVigenere();
+        mensajeCifrado = cifVigenere.cifrarMensaje(mensaje);
+        break;
+
+      case "Palabra inversa":
+        CifPalabraInversa cifPalabraInversa = new CifPalabraInversa();
+        mensajeCifrado = cifPalabraInversa.cifrarMensaje(mensaje);
+        break;
 
       case "Mensaje inverso":
         CifMensajeInverso cifMensajeInverso = new CifMensajeInverso();
         mensajeCifrado = cifMensajeInverso.cifrarMensaje(mensaje);
         break;
 
-//      case "Código telefónico":
-//      case "Codificación binaria":
+      case "Código telefónico":
+        CifCodigoTelefonico cifCodigoTelefonico = new CifCodigoTelefonico();
+        mensajeCifrado = cifCodigoTelefonico.cifrarMensaje(mensaje);
+        break;
+
+      case "Codificación binaria":
+        CifCodificacionBinaria cifCodificacionBinaria = new CifCodificacionBinaria();
+        mensajeCifrado = cifCodificacionBinaria.cifrarMensaje(mensaje);
+        break;
 
       case "RSA":
         CifRsa cifRsa = new CifRsa();
-        
         // En caso de que no se hayan generado los parámetros
         // necesarios para el cifrado RSA, se generan aquí.
         if (modulo == 0) {
@@ -309,21 +348,32 @@ public class ControladorEncriptador implements ActionListener {
           exponentePublico = parametros.get(1);
           exponentePrivado = parametros.get(2);
         }
-        
         mensajeCifrado = cifRsa.cifrarMensaje(mensaje, modulo, exponentePublico);
         break;
 
-//      case "DES":
-//      case "AES":
+      case "DES":
+        CifDes cifDes = new CifDes();
+        mensajeCifrado = cifDes.cifrarMensaje(mensaje);
+        break;
+
+      case "AES":
+        CifAes cifAes = new CifAes();
+        llave = JOptionPane.showInputDialog(vista, "Ingrese la llave a usar para cifrar el mensaje.");
+        if (llave.isEmpty()) {  // Si no se especifica una llave, se usa la predeterminada.
+          mensajeCifrado = cifAes.cifrarMensaje(mensaje);
+        } else {
+          mensajeCifrado = cifAes.cifrarMensaje(mensaje, llave);
+        }
+        break;
 
       default:
-        JOptionPane.showMessageDialog(vista, "El algoritmo de cifrado elegido es inválido.");
+        JOptionPane.showMessageDialog(vista, "No se pudo cifrar el mensaje.");
         return;
     }
 
     vista.txtSalida.setText(mensajeCifrado);
   }
-  
+
   /**
    * Verifica cuál es el algoritmo de cifrado elegido y en base a eso descifra
    * el mensaje introducido por el usuario y lo muestra en la interfaz.
@@ -342,32 +392,54 @@ public class ControladorEncriptador implements ActionListener {
       return;
     }
     String mensajeDescifrado;
+    String llave;
 
     switch (algoritmoElegido) {
 
-//      case "César":
+      case "César":
+        CifCesar cifCesar = new CifCesar();
+        mensajeDescifrado = cifCesar.descifrarMensaje(mensaje);
+        break;
 
       case "Llave":
         CifLlave cifLlave = new CifLlave();
-        String llave = JOptionPane.showInputDialog(vista,
-                                                   "Ingrese la llave a usar para descifrar el mensaje.");
-        mensajeDescifrado = cifLlave.descifrarMensaje(mensaje, llave);
+        llave = JOptionPane.showInputDialog(vista,
+                "Ingrese la llave a usar para descifrar el mensaje.");
+        if (llave.isEmpty()) {  // Si no se especifica una llave, se usa la predeterminada.
+          mensajeDescifrado = cifLlave.descifrarMensaje(mensaje);
+        } else {
+          mensajeDescifrado = cifLlave.descifrarMensaje(mensaje, llave);
+        }
         break;
 
-//      case "Vigenére":
-//      case "Palabra inversa":
+      case "Vigenére":
+        CifVigenere cifVigenere = new CifVigenere();
+        mensajeDescifrado = cifVigenere.descifrarMensaje(mensaje);
+        break;
+
+      case "Palabra inversa":
+        CifPalabraInversa cifPalabraInversa = new CifPalabraInversa();
+        mensajeDescifrado = cifPalabraInversa.descifrarMensaje(mensaje);
+        break;
 
       case "Mensaje inverso":
         CifMensajeInverso cifMensajeInverso = new CifMensajeInverso();
         mensajeDescifrado = cifMensajeInverso.descifrarMensaje(mensaje);
         break;
 
-//      case "Código telefónico":
-//      case "Codificación binaria":
+      case "Código telefónico":
+        CifCodigoTelefonico cifCodigoTelefonico = new CifCodigoTelefonico();
+        mensajeDescifrado = cifCodigoTelefonico.descifrarMensaje(mensaje);
+        break;
+
+      case "Codificación binaria":
+        CifCodificacionBinaria cifCodificacionBinaria = new CifCodificacionBinaria();
+        mensajeDescifrado = cifCodificacionBinaria.descifrarMensaje(mensaje);
+        break;
 
       case "RSA":
         CifRsa cifRsa = new CifRsa();
-        
+
         if (modulo == 0) {
           String msg = """
                        Aún no se han generado los parámetros necesarios para el decifrado con RSA.
@@ -375,41 +447,57 @@ public class ControladorEncriptador implements ActionListener {
           JOptionPane.showMessageDialog(vista, msg, "Faltan parámetros", JOptionPane.ERROR_MESSAGE);
           return;
         }
-        
+
         mensajeDescifrado = cifRsa.descifrarMensaje(mensaje, modulo, exponentePrivado);
         break;
 
-//      case "DES":
-//      case "AES":
+      case "DES":
+        CifDes cifDes = new CifDes();
+        mensajeDescifrado = cifDes.descifrarMensaje(mensaje);
+        break;
 
+      case "AES":
+        CifAes cifAes = new CifAes();
+        llave = JOptionPane.showInputDialog(vista,
+                "Ingrese la llave a usar para descifrar el mensaje.");
+        if (llave.isEmpty()) {  // Si no se especifica una llave, se usa la predeterminada.
+          mensajeDescifrado = cifAes.descifrarMensaje(mensaje);
+        } else {
+          mensajeDescifrado = cifAes.descifrarMensaje(mensaje, llave);
+        }
+        break;
+        
       default:
-        JOptionPane.showMessageDialog(vista, "El algoritmo de cifrado elegido es inválido.");
+        JOptionPane.showMessageDialog(vista, "No se pudo descifrar el mensaje.");
         return;
     }
-    
+
     vista.txtSalida.setText(mensajeDescifrado);
   }
 
   /**
-   * Verifica si una dirección de correo electrónico es válida y existente.
-   * @param pCorreo Dirección de correo electrónico a verificar.
-   * @return true si se cumple la condición, sino false.
-   */
-  public boolean correoValido(String pCorreo) {
-    // Lógica de validación de correo aquí.
-    return true;
-  }
-  
-  /**
-   * Envía el texto de salida a la dirección de correo deseada, siempre y
-   * cuando no sea un texto vacío y la dirección de correo ingresada exista.
+   * Envía el texto de salida a la dirección de correo deseada, siempre y cuando
+   * no sea un texto vacío y la dirección de correo ingresada exista.
    */
   public void enviarCorreo() {
     String msg = "Porfavor escriba la dirección de correo a la cual desea enviar el texto.";
     String correo = JOptionPane.showInputDialog(vista, msg);
-    if (correoValido(correo)) {
-      // Lógica de envío de correo aquí.
-    }            
+    
+    if (correo.isEmpty()) {
+      JOptionPane.showMessageDialog(vista, "Porfavor especifique primero la dirección de correo.");
+      return;
+    }
+    
+    CuentaCorreo cuenta = new CuentaCorreo("cifradosrmh@gmail.com");
+    if (!cuenta.correoValido(correo)) {
+      String msgError = "La dirección de correo especificada es inválida.";
+      JOptionPane.showMessageDialog(vista, msgError, "Dirección inválida", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+    
+    String mensajeCifrado = vista.txtSalida.getText();
+    String cuerpoCorreo = "El mensaje cifrado solicitado es el siguiente:\n\n" + mensajeCifrado;
+    cuenta.enviarCorreo(correo, "Mensaje cifrado", cuerpoCorreo);
   }
 
   /**
