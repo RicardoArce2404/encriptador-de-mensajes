@@ -1,5 +1,10 @@
 package controlador;
 
+import java.awt.AWTError;
+import java.awt.HeadlessException;
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 import vista.FormVentanaPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,6 +59,7 @@ public class ControladorEncriptador implements ActionListener {
     vista.btCifrar.addActionListener((ActionListener) this);
     vista.btEnviarCorreo.addActionListener((ActionListener) this);
     vista.btSalir.addActionListener((ActionListener) this);
+    vista.btCopiar.addActionListener((ActionListener) this);
   }
 
   /**
@@ -97,7 +103,7 @@ public class ControladorEncriptador implements ActionListener {
     }
     return true;
   }
-  
+
   /**
    * Verifica si el mensaje especificado contiene algún caracter inválido para
    * el algoritmo de cifrado especificado, exceptuando al carácter \n y al
@@ -207,20 +213,14 @@ public class ControladorEncriptador implements ActionListener {
    */
   public void actionPerformed(ActionEvent pEvento) {
     switch (pEvento.getActionCommand()) {
-      case "comboBoxChanged" ->
-        cambiarOperacion();
-      case "Cargar archivo de texto" ->
-        cargarArchivoTexto();
-      case "Cifrar texto" ->
-        cifrar();
-      case "Descifrar texto" ->
-        descifrar();
-      case "Enviar por correo" ->
-        enviarCorreo();
-      case "Salir" ->
-        salir();
+      case "comboBoxChanged" -> cambiarOperacion();
+      case "Cargar archivo de texto" -> cargarArchivoTexto();
+      case "Cifrar texto" -> cifrar();
+      case "Descifrar texto" -> descifrar();
+      case "Enviar por correo" -> enviarCorreo();
+      case "Copiar" -> copiarSalida();
+      case "Salir" -> salir();
       default -> {
-        System.out.println(pEvento.getActionCommand());
         return;
       }
     }
@@ -466,7 +466,7 @@ public class ControladorEncriptador implements ActionListener {
           mensajeDescifrado = cifAes.descifrarMensaje(mensaje, llave);
         }
         break;
-        
+
       default:
         JOptionPane.showMessageDialog(vista, "No se pudo descifrar el mensaje.");
         return;
@@ -483,21 +483,46 @@ public class ControladorEncriptador implements ActionListener {
     String msg = "Porfavor escriba la dirección de correo a la cual desea enviar el texto.";
     String correo = JOptionPane.showInputDialog(vista, msg);
     
+    if (correo == null) {
+      return;
+    }
     if (correo.isEmpty()) {
       JOptionPane.showMessageDialog(vista, "Porfavor especifique primero la dirección de correo.");
       return;
     }
-    
+
     CuentaCorreo cuenta = new CuentaCorreo("cifradosrmh@gmail.com");
     if (!cuenta.correoValido(correo)) {
       String msgError = "La dirección de correo especificada es inválida.";
       JOptionPane.showMessageDialog(vista, msgError, "Dirección inválida", JOptionPane.ERROR_MESSAGE);
       return;
     }
-    
+
     String mensajeCifrado = vista.txtSalida.getText();
     String cuerpoCorreo = "El mensaje cifrado solicitado es el siguiente:\n\n" + mensajeCifrado;
     cuenta.enviarCorreo(correo, "Mensaje cifrado", cuerpoCorreo);
+  }
+
+  public void copiarSalida() {
+    String textoSalida = vista.txtSalida.getText();
+    if (textoSalida.isEmpty()) {
+      String msg = "No hay texto para copiar aún.";
+      JOptionPane.showMessageDialog(vista, msg, "Texto vacío", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+    Clipboard portapapeles;
+
+    try {
+      portapapeles = Toolkit.getDefaultToolkit().getSystemClipboard();
+      portapapeles.setContents(new StringSelection(textoSalida), null);
+      JOptionPane.showMessageDialog(vista, "Texto copiado satisfactoriamente.");
+    } catch (AWTError | HeadlessException e) {
+      String msg = "Ocurrió un error al intentar acceder al portapapeles del sistema.";
+      JOptionPane.showMessageDialog(vista, msg, "Error del sistema", JOptionPane.ERROR_MESSAGE);
+    } catch (IllegalStateException e) {
+      String msg = "El portapapeles no está disponible en este momento.";
+      JOptionPane.showMessageDialog(vista, msg, "Error de copiado", JOptionPane.ERROR_MESSAGE);
+    }
   }
 
   /**
