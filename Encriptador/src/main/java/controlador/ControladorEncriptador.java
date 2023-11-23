@@ -95,9 +95,31 @@ public class ControladorEncriptador implements ActionListener {
     return valorLetra >= 48 && valorLetra <= 57;
   }
 
+  /**
+   * Valida si el texto especificado contiene solo caracteres ASCII.
+   *
+   * @param pTexto Texto a validar.
+   * @return true si se cumple la condición, sino false.
+   */
   public boolean esTextoAscii(String pTexto) {
     for (char caracter : pTexto.toCharArray()) {
       if (!StandardCharsets.US_ASCII.newEncoder().canEncode(caracter)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Valida si el texto especificado contiene solo caracteres ASCII visibles.
+   *
+   * @param pTexto Texto a validar.
+   * @return true si se cumple la condición, sino false.
+   */  
+  public boolean esTextoAsciiVisible(String pTexto) {
+    for (char caracter : pTexto.toCharArray()) {
+      int valorCaracter = (int) caracter;
+      if (!StandardCharsets.US_ASCII.newEncoder().canEncode(caracter) || valorCaracter < 33 || valorCaracter > 126) {
         return false;
       }
     }
@@ -199,7 +221,13 @@ public class ControladorEncriptador implements ActionListener {
 
       case "DES":  // Pasa al siguiente case.
       case "AES":
-        return esTextoAscii(pMensaje);
+        if (pOperacion.equals("Cifrar")) {
+          return esTextoAscii(pMensaje);
+        }
+        if (pOperacion.equals("Descifrar")) {
+          return esTextoAsciiVisible(pMensaje);
+        }
+        return false;
 
       default:
         return false;
@@ -371,6 +399,11 @@ public class ControladorEncriptador implements ActionListener {
         return;
     }
 
+    if (mensajeCifrado == null) {
+      String msg = "Ocurrió un error con el cifrado del mensaje.";
+      JOptionPane.showMessageDialog(vista, msg, "Error de cifrado", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     vista.txtSalida.setText(mensajeCifrado);
   }
 
@@ -472,6 +505,11 @@ public class ControladorEncriptador implements ActionListener {
         return;
     }
 
+    if (mensajeDescifrado == null) {
+      String msg = "Ocurrió un error con el descifrado del mensaje.";
+      JOptionPane.showMessageDialog(vista, msg, "Error de descifrado", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     vista.txtSalida.setText(mensajeDescifrado);
   }
 

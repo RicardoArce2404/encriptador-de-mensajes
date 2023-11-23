@@ -110,7 +110,7 @@ public class CifAes extends AlgoritmoCifrado {
       byte[] bytesMensajeDescifrado = cipher.doFinal(bytesMensaje);
       mensajeDescifrado = new String(bytesMensajeDescifrado);
     } catch (Exception e) {
-      mensajeDescifrado = "";
+      return null;
     }
 
     return mensajeDescifrado;
@@ -133,7 +133,7 @@ public class CifAes extends AlgoritmoCifrado {
       byte[] bytesMensajeDescifrado = cipher.doFinal(bytesMensaje);
       mensajeDescifrado = new String(bytesMensajeDescifrado);
     } catch (Exception e) {
-      mensajeDescifrado = "";
+      return null;
     }
 
     return mensajeDescifrado;
