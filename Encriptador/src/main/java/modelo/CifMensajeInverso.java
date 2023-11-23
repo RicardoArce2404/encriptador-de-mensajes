@@ -7,6 +7,8 @@ package modelo;
  */
 public class CifMensajeInverso extends AlgoritmoCifrado {
 
+  private String ALGORITMO = "Cifrado por mensaje inverso";
+  
   /**
    * Cifra un mensaje.
    *

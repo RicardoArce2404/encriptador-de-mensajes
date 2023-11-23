@@ -13,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class CifAes extends AlgoritmoCifrado {
 
+  private String ALGORITMO = "AES";
   private String mensajeCifrado;
   private String mensajeDescifrado;
 

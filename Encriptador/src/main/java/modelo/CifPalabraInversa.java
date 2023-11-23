@@ -7,6 +7,7 @@ package modelo;
  */
 public class CifPalabraInversa extends AlgoritmoCifrado {
 
+  private String ALGORITMO = "Cifrado por palabra inversa";
   private String mensajeCifrado;
   private String mensajeDescifrado;
 

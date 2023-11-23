@@ -7,6 +7,8 @@ package modelo;
  */
 public class CifLlave extends AlgoritmoCifrado {
 
+  private String ALGORITMO = "Cifrado por llave";
+
   /**
    * Cifra un mensaje usando una llave predeterminada.
    *

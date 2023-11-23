@@ -13,6 +13,7 @@ import java.util.Collections;
  */
 public class CifRsa extends AlgoritmoCifrado {
 
+  private String ALGORITMO = "RSA";
   // Valor a usar como límite superior para el generador de número aleatorios.
   private final int limiteGenerador = (int) Math.pow(2, 8);
 

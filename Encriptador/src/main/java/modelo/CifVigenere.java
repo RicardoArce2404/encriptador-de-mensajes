@@ -7,7 +7,7 @@ package modelo;
  */
 public class CifVigenere extends AlgoritmoCifrado {
   
-  private final String clave = "clave";
+  private String ALGORITMO = "Cifrado de Vigenére";
   
   /**
    * Cifra un mensaje usando el alfabeto, la primera letra avanza 2 letras y la segunda 3 letras.

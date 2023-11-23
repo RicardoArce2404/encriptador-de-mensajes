@@ -8,18 +8,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
- * Implementación de la clase CifDes que utiliza el algoritmo de cifrado DES.
+ * Implementación del algoritmo de cifrado DES.
  *
  * @autor HeldyisAE
  */
 public class CifDes extends AlgoritmoCifrado {
 
-  private static final String ALGORITMO = "DES";
+  private String ALGORITMO = "DES";
 
   @Override
   public String cifrarMensaje(String pTexto) {
     try {
-      // Clave de 8 bytes para DES (deberías manejar esto de manera más segura en un entorno real)
       String keyString = "mi_clave";
       byte[] keyBytes = keyString.getBytes(StandardCharsets.UTF_8);
       DESKeySpec desKeySpec = new DESKeySpec(keyBytes);
@@ -33,7 +32,6 @@ public class CifDes extends AlgoritmoCifrado {
       byte[] encryptedBytes = cipher.doFinal(pTexto.getBytes(StandardCharsets.UTF_8));
       return Base64.getEncoder().encodeToString(encryptedBytes);
     } catch (Exception e) {
-      // Manejar las excepciones de manera adecuada en un entorno real
       e.printStackTrace();
       return null;
     }
@@ -42,7 +40,6 @@ public class CifDes extends AlgoritmoCifrado {
   @Override
   public String descifrarMensaje(String pCodigo) {
     try {
-      // Clave de 8 bytes para DES (deberías manejar esto de manera más segura en un entorno real)
       String keyString = "mi_clave";
       byte[] keyBytes = keyString.getBytes(StandardCharsets.UTF_8);
       DESKeySpec desKeySpec = new DESKeySpec(keyBytes);
@@ -57,7 +54,6 @@ public class CifDes extends AlgoritmoCifrado {
       byte[] decryptedBytes = cipher.doFinal(decodedBytes);
       return new String(decryptedBytes, StandardCharsets.UTF_8);
     } catch (Exception e) {
-      // Manejar las excepciones de manera adecuada en un entorno real
       e.printStackTrace();
       return null;
     }

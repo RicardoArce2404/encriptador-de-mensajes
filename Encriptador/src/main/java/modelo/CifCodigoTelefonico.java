@@ -7,6 +7,7 @@ package modelo;
  */
 public class CifCodigoTelefonico extends AlgoritmoCifrado {
 
+  private String ALGORITMO = "Código telefónico";
   private String mensajeCifrado;
   private String mensajeDescifrado;
   private static String abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

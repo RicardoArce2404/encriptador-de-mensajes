@@ -7,10 +7,11 @@ package modelo;
  */
 public class CifCesar extends AlgoritmoCifrado {
 
+  private String ALGORITMO = "Cifrado César";
   private String mensajeCifrado;
   private String mensajeDescifrado;
   private static String abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
+  
   /**
    * Consigue la nueva letra que corresponde según el cifrado de cifrar.
    *

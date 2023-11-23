@@ -6,7 +6,8 @@ package modelo;
  * @author HeldyisAE
  */
 public class CifCodificacionBinaria extends AlgoritmoCifrado {
-  
+
+  private String ALGORITMO = "Codificación binaria";
   /**
    * Cifra un mensaje basado en el sistema binario utilizando solamente 5 bits.
    *
