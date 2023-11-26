@@ -2,19 +2,20 @@ package modelo;
 
 /**
  * Implementacion del algoritmo de cifrado basado en el sistema binario.
- * 
+ *
  * @author HeldyisAE
  */
 public class CifCodificacionBinaria extends AlgoritmoCifrado {
 
   private String ALGORITMO = "Codificación binaria";
+
   /**
    * Cifra un mensaje basado en el sistema binario utilizando solamente 5 bits.
    *
    * @param pMensaje Mensaje a cifrar.
    * @return Mensaje cifrado.
    */
-  
+
   @Override
   public String cifrarMensaje(String pMensaje) {
     StringBuilder mensajeCifrado = new StringBuilder();
@@ -39,14 +40,14 @@ public class CifCodificacionBinaria extends AlgoritmoCifrado {
 
     return mensajeCifrado.toString().trim(); // Elimina el espacio en blanco adicional al final
   }
-  
+
   /**
-   * Descifra un mensaje usando los números en binario correspondientes para cada letra.
+   * Descifra un mensaje usando los números en binario correspondientes para
+   * cada letra.
    *
    * @param pMensaje Mensaje a descifrar.
    * @return Mensaje descifrado.
-   */ 
-  
+   */
   @Override
   public String descifrarMensaje(String pMensaje) {
     StringBuilder mensajeDescifrado = new StringBuilder();

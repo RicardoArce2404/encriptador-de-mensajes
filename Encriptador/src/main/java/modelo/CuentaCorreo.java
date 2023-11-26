@@ -66,13 +66,13 @@ public class CuentaCorreo {
   }
 
   /**
-   * Método para enviar un correo con asunto, destinario y mensaje.
+   * Método para enviar un correo con asunto, destinatario y mensaje.
    *
-   * @param destinario direccion de correo a la que se va a enviar el correo.
-   * @param tituloCorreo asunto del correo.
-   * @param cuerpo mensaje que quiera enviar al destinario.
+   * @param pDestinatario direccion de correo a la que se va a enviar el correo.
+   * @param pTituloCorreo asunto del correo.
+   * @param pCuerpo mensaje que quiera enviar al pDestinatario.
    */
-  public void enviarCorreo(String destinario, String tituloCorreo, String cuerpo) {
+  public void enviarCorreo(String pDestinatario, String pTituloCorreo, String pCuerpo) {
     Session sesion = abrirSesion();
 
     try {
@@ -80,60 +80,10 @@ public class CuentaCorreo {
       message.setFrom(new InternetAddress(usuario));
       message.setRecipients(
               Message.RecipientType.TO,
-              InternetAddress.parse(destinario)
+              InternetAddress.parse(pDestinatario)
       );
-      message.setSubject(tituloCorreo);
-      message.setText(cuerpo);
-
-      Transport.send(message);
-    } catch (MessagingException e) {
-      e.printStackTrace();
-    }
-
-  }
-
-  /**
-   * Método para enviar un correo con asunto, destinario, mensaje y archivos
-   * adjuntos.
-   *
-   * @param destinario direccion de correo a la que se va a enviar el correo.
-   * @param tituloCorreo asunto del correo.
-   * @param cuerpo mensaje que quiera enviar al destinario.
-   * @param archivosAdjuntos direccion de acceso de los archivos que va a enviar.
-   */
-  public void enviarCorreo(String destinario, String tituloCorreo, String cuerpo,
-          String[] archivosAdjuntos) {
-    Session sesion = abrirSesion();
-
-    try {
-      Message message = new MimeMessage(sesion);
-      message.setFrom(new InternetAddress(usuario));
-      message.setRecipients(
-              Message.RecipientType.TO,
-              InternetAddress.parse(destinario)
-      );
-      message.setSubject(tituloCorreo);
-
-      BodyPart messageBodyPart = new MimeBodyPart();
-      messageBodyPart.setText(cuerpo);
-
-      Multipart multipart = new MimeMultipart();
-      multipart.addBodyPart(messageBodyPart);
-
-      int largoArchivosAdjuntos = archivosAdjuntos.length;
-
-      for (int i = 0; i < largoArchivosAdjuntos; i++) {
-        String nombreArchivo = archivosAdjuntos[i];
-
-        messageBodyPart = new MimeBodyPart();
-        DataSource fuente = new FileDataSource(nombreArchivo);
-        DataHandler datahandler = new DataHandler(fuente);
-        messageBodyPart.setDataHandler(datahandler);
-        messageBodyPart.setFileName(nombreArchivo);
-        multipart.addBodyPart(messageBodyPart);
-
-        message.setContent(multipart);
-      }
+      message.setSubject(pTituloCorreo);
+      message.setText(pCuerpo);
 
       Transport.send(message);
     } catch (MessagingException e) {

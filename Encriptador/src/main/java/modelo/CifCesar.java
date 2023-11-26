@@ -8,8 +8,6 @@ package modelo;
 public class CifCesar extends AlgoritmoCifrado {
 
   private String ALGORITMO = "Cifrado César";
-  private String mensajeCifrado;
-  private String mensajeDescifrado;
   private static String abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   
   /**
@@ -39,7 +37,7 @@ public class CifCesar extends AlgoritmoCifrado {
   @Override
   public String cifrarMensaje(String pMensaje) {
     // Pasa a mayuscula el texto
-    mensajeCifrado = "";
+    String mensajeCifrado = "";
     String nuevoMensaje = pMensaje.toUpperCase();
     int largoMensaje = nuevoMensaje.length();
 
@@ -87,7 +85,7 @@ public class CifCesar extends AlgoritmoCifrado {
    */
   @Override
   public String descifrarMensaje(String pMensaje) {
-    mensajeDescifrado = "";
+    String mensajeDescifrado = "";
     // Pasa a mayuscula el texto
     String nuevoMensaje = pMensaje.toUpperCase();
     int largoMensaje = nuevoMensaje.length();
@@ -111,26 +109,4 @@ public class CifCesar extends AlgoritmoCifrado {
             + mensajeDescifrado.substring(1).toLowerCase();
     return mensajeDescifrado;
   }
-
-  // Métodos getter
-  // mensajeCifrado
-  /**
-   * Retorna el valor de mensajeCifrado.
-   *
-   * @return El mensaje cifrado.
-   */
-  public String getMensajeCifrado() {
-    return mensajeCifrado;
-  }
-
-  // mensajeDescifrado
-  /**
-   * Retorna el valor de mensajeDescifrado.
-   *
-   * @return El mensaje descifrado.
-   */
-  public String getMensajeDescifrado() {
-    return mensajeDescifrado;
-  }
-
 }

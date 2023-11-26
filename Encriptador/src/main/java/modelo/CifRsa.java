@@ -15,7 +15,7 @@ public class CifRsa extends AlgoritmoCifrado {
 
   private String ALGORITMO = "RSA";
   // Valor a usar como límite superior para el generador de número aleatorios.
-  private final int limiteGenerador = (int) Math.pow(2, 8);
+  private final int LIMITE_GENERADOR = (int) Math.pow(2, 8);
 
   /**
    * Valida si el número especificado es un número primo.
@@ -35,7 +35,7 @@ public class CifRsa extends AlgoritmoCifrado {
 
   /**
    * Genera un número primo aleatorio entre 1 y el valor dado por
-   * limiteGenerador.
+   * LIMITE_GENERADOR.
    *
    * @return Un número primo aleatorio.
    */
@@ -43,7 +43,7 @@ public class CifRsa extends AlgoritmoCifrado {
     Random generador = new Random();
     int numeroAleatorio;
     do {
-      numeroAleatorio = generador.nextInt(1, limiteGenerador);
+      numeroAleatorio = generador.nextInt(1, LIMITE_GENERADOR);
     } while (!esPrimo(numeroAleatorio));
     return numeroAleatorio;
   }

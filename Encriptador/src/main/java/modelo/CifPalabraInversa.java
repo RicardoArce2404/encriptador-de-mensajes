@@ -8,8 +8,6 @@ package modelo;
 public class CifPalabraInversa extends AlgoritmoCifrado {
 
   private String ALGORITMO = "Cifrado por palabra inversa";
-  private String mensajeCifrado;
-  private String mensajeDescifrado;
 
   /**
    * Invierte la palabra.
@@ -17,11 +15,11 @@ public class CifPalabraInversa extends AlgoritmoCifrado {
    * @param palabraActual Palabra que se quiere invertir.
    * @return palabraNueva La palabra invertida.
    */
-  private String invertirPalabra(String palabraActual) {
-    int largoPalabra = palabraActual.length() - 1;
+  private String invertirPalabra(String pPalabraActual) {
+    int largoPalabra = pPalabraActual.length() - 1;
     String palabraNueva = "";
     for (int i = largoPalabra; i >= 0; i--) {
-      char letra = palabraActual.charAt(i);
+      char letra = pPalabraActual.charAt(i);
       palabraNueva += letra;
     }
 
@@ -36,7 +34,7 @@ public class CifPalabraInversa extends AlgoritmoCifrado {
    */
   @Override
   public String cifrarMensaje(String pMensaje) {
-    mensajeCifrado = "";
+    String mensajeCifrado = "";
     int largoMensaje = pMensaje.length();
     String palabraTemporal = "";
     // Recorre el texto y crea el mensaje cifrado
@@ -66,7 +64,7 @@ public class CifPalabraInversa extends AlgoritmoCifrado {
    */
   @Override
   public String descifrarMensaje(String pMensaje) {
-    mensajeDescifrado = "";
+    String mensajeDescifrado = "";
     int largoMensaje = pMensaje.length();
     String palabraTemporal = "";
     // Recorre el texto y crea el mensaje decifrado
@@ -87,26 +85,4 @@ public class CifPalabraInversa extends AlgoritmoCifrado {
 
     return mensajeDescifrado;
   }
-
-  // Métodos getter 
-  // mensajeCifrado
-  /**
-   * Retorna el valor de mensajeCifrado.
-   *
-   * @return mensajeCifrado El mensaje cifrado.
-   */
-  public String getMensajeCifrado() {
-    return mensajeCifrado;
-  }
-
-  // mensajeDescifrado
-  /**
-   * Retorna el valor de mensajeDescifrado.
-   *
-   * @return mensajeDecifrado El mensaje descifrado.
-   */
-  public String getMensajeDescifrado() {
-    return mensajeDescifrado;
-  }
-
 }

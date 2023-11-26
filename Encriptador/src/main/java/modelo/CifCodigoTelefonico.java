@@ -8,28 +8,26 @@ package modelo;
 public class CifCodigoTelefonico extends AlgoritmoCifrado {
 
   private String ALGORITMO = "Código telefónico";
-  private String mensajeCifrado;
-  private String mensajeDescifrado;
   private static String abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   private static String numerosTelefono = "123456789";
 
   /**
    * Consigue el valor númerico correspondiente a la letra.
    *
-   * @param letraActual La letra del mensaje.
+   * @param pLetraActual La letra del mensaje.
    * @return Valor númerico correspondiente tipo String.
    */
-  private String getValorNumerico(char letraActual) {
-    String valorNumerico = "";
+  private String getValorNumerico(char pLetraActual) {
+    String pValorNumerico = "";
     int numero = 2;
     int posicion = 1;
     int largoAbecedario = abecedario.length();
-    // Verifica si la letraActual a una letra del abecedario.
+    // Verifica si la pLetraActual a una letra del abecedario.
     // Asi define que numero y posicion le corresponden.
     for (int i = 0; i < largoAbecedario; i++) {
       char letraAbecedario = abecedario.charAt(i);
-      if (letraActual == letraAbecedario) {
-        valorNumerico += Integer.toString(numero) + Integer.toString(posicion);
+      if (pLetraActual == letraAbecedario) {
+        pValorNumerico += Integer.toString(numero) + Integer.toString(posicion);
         break;
       }
 
@@ -44,7 +42,7 @@ public class CifCodigoTelefonico extends AlgoritmoCifrado {
 
     }
 
-    return valorNumerico;
+    return pValorNumerico;
   }
 
   /**
@@ -55,7 +53,7 @@ public class CifCodigoTelefonico extends AlgoritmoCifrado {
    */
   @Override
   public String cifrarMensaje(String pMensaje) {
-    mensajeCifrado = "";
+    String mensajeCifrado = "";
     // Pasa a mayuscula el texto
     String nuevoMensaje = pMensaje.toUpperCase();
     int largoMensaje = pMensaje.length();
@@ -69,8 +67,8 @@ public class CifCodigoTelefonico extends AlgoritmoCifrado {
         mensajeCifrado += '\n';
       } else {
         if (abecedario.contains(String.valueOf(letraMensaje))) {
-          String valorNumerico = getValorNumerico(letraMensaje);
-          mensajeCifrado += valorNumerico + ' ';
+          String pValorNumerico = getValorNumerico(letraMensaje);
+          mensajeCifrado += pValorNumerico + ' ';
         }
 
       }
@@ -83,15 +81,15 @@ public class CifCodigoTelefonico extends AlgoritmoCifrado {
   /**
    * Consigue la nueva letra que corresponde según el número dado.
    *
-   * @param valorNumerico El valor numerico de la letra.
+   * @param pValorNumerico El valor numerico de la letra.
    * @return Letra que corresponde segun el valor númerico.
    */
-  private char getValorLetra(String valorNumerico) {
+  private char getValorLetra(String pValorNumerico) {
     int numero = 2;
     int posicion = 1;
     int largoAbecedario = abecedario.length();
-    int numeroActual = valorNumerico.charAt(0) - '0';
-    int posicionActual = valorNumerico.charAt(1) - '0';
+    int numeroActual = pValorNumerico.charAt(0) - '0';
+    int posicionActual = pValorNumerico.charAt(1) - '0';
     char valorLetra = ' ';
     // Verifica si el numero y la posicion son iguales
     // Asi define que numero y posicion le corresponden.
@@ -123,24 +121,24 @@ public class CifCodigoTelefonico extends AlgoritmoCifrado {
    */
   @Override
   public String descifrarMensaje(String pMensaje) {
-    mensajeDescifrado = "";
+    String mensajeDescifrado = "";
     int largoMensaje = pMensaje.length();
-    String valorNumerico = "";
+    String pValorNumerico = "";
 
     // Recorre el texto y crea el mensaje decifrado
     for (int i = 0; i < largoMensaje; i++) {
       char numMensaje = pMensaje.charAt(i);
       if (numMensaje == ' ' || i == (largoMensaje - 1)) {
-        char valorLetra = getValorLetra(valorNumerico);
+        char valorLetra = getValorLetra(pValorNumerico);
         mensajeDescifrado += valorLetra;
-        valorNumerico = "";
+        pValorNumerico = "";
       } else if (numMensaje == '*') {
         mensajeDescifrado += ' ';
       } else if (numMensaje == '\n') {
         mensajeDescifrado += '\n';
       } else {
         if (numerosTelefono.contains(String.valueOf(numMensaje))) {
-          valorNumerico += numMensaje;
+          pValorNumerico += numMensaje;
         }
 
       }
@@ -151,26 +149,4 @@ public class CifCodigoTelefonico extends AlgoritmoCifrado {
             + mensajeDescifrado.substring(1).toLowerCase();
     return mensajeDescifrado;
   }
-
-  // Métodos getter 
-  // mensajeCifrado
-  /**
-   * Retorna el valor de mensajeCifrado.
-   *
-   * @return mensajeCifrado El mensaje cifrado.
-   */
-  public String getMensajeCifrado() {
-    return mensajeCifrado;
-  }
-
-  // mensajeDescifrado
-  /**
-   * Retorna el valor de mensajeDescifrado.
-   *
-   * @return mensajeDecifrado El mensaje decifrado.
-   */
-  public String getMensajeDescifrado() {
-    return mensajeDescifrado;
-  }
-
 }

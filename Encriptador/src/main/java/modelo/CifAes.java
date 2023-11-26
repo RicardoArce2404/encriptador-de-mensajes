@@ -14,8 +14,6 @@ import javax.crypto.spec.SecretKeySpec;
 public class CifAes extends AlgoritmoCifrado {
 
   private String ALGORITMO = "AES";
-  private String mensajeCifrado;
-  private String mensajeDescifrado;
 
   /**
    * Crea una clave secreta para aplicar el cifrado AES.
@@ -48,7 +46,7 @@ public class CifAes extends AlgoritmoCifrado {
    */
   @Override
   public String cifrarMensaje(String pMensaje) {
-    mensajeCifrado = "";
+    String mensajeCifrado = "";
     String llave = "LlavePredeterminada";
     try {
       SecretKeySpec secretKey = crearSecretKey(llave);
@@ -75,7 +73,7 @@ public class CifAes extends AlgoritmoCifrado {
    * @return El mensaje cifrado.
    */
   public String cifrarMensaje(String pMensaje, String pLlave) {
-    mensajeCifrado = "";
+    String mensajeCifrado = "";
     try {
       SecretKeySpec secretKey = crearSecretKey(pLlave);
       // Configuración del cifrado por AES
@@ -101,7 +99,7 @@ public class CifAes extends AlgoritmoCifrado {
    */
   @Override
   public String descifrarMensaje(String pMensaje) {
-    mensajeDescifrado = "";
+    String mensajeDescifrado = "";
     String llave = "LlavePredeterminada";
     try {
       SecretKeySpec secretKey = crearSecretKey(llave);
@@ -125,7 +123,7 @@ public class CifAes extends AlgoritmoCifrado {
    * @return El mensaje descifrado.
    */
   public String descifrarMensaje(String pMensaje, String pLlave) {
-    mensajeDescifrado = "";
+    String mensajeDescifrado = "";
     try {
       SecretKeySpec secretKey = crearSecretKey(pLlave);
       Cipher cipher = Cipher.getInstance("AES");
@@ -139,26 +137,4 @@ public class CifAes extends AlgoritmoCifrado {
 
     return mensajeDescifrado;
   }
-
-  // Métodos getter
-  // mensajeCifrado
-  /**
-   * Retorna el valor de mensajeCifrado.
-   *
-   * @return El mensaje cifrado.
-   */
-  public String getMensajeCifrado() {
-    return mensajeCifrado;
-  }
-
-  // mensajeDsecifrado
-  /**
-   * Retorna el valor de mensajeDescifrado.
-   *
-   * @return El mensaje descifrado.
-   */
-  public String getMensajeDescifrado() {
-    return mensajeDescifrado;
-  }
-
 }

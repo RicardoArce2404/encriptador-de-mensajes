@@ -28,12 +28,12 @@ import modelo.*;
  */
 public class ControladorEncriptador implements ActionListener {
 
-  public FormVentanaPrincipal vista;
+  private FormVentanaPrincipal vista;
 
   // Parámetros a usar para el cifrado RSA.
-  public int modulo = 0;
-  public int exponentePublico = 0;
-  public int exponentePrivado = 0;
+  private int modulo = 0;
+  private int exponentePublico = 0;
+  private int exponentePrivado = 0;
 
   /**
    * Punto de inicio de la aplicación.
@@ -115,7 +115,7 @@ public class ControladorEncriptador implements ActionListener {
    *
    * @param pTexto Texto a validar.
    * @return true si se cumple la condición, sino false.
-   */  
+   */
   public boolean esTextoAsciiVisible(String pTexto) {
     for (char caracter : pTexto.toCharArray()) {
       int valorCaracter = (int) caracter;
