@@ -1,5 +1,8 @@
 package vista;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
 /**
  * Ventana principal de la aplicación.
  * 
@@ -12,6 +15,8 @@ public class FormVentanaPrincipal extends javax.swing.JFrame {
    */
   public FormVentanaPrincipal() {
     initComponents();
+    Image icono = Toolkit.getDefaultToolkit().getImage("./iconoV2.png");
+    this.setIconImage(icono);
   }
 
   /**
